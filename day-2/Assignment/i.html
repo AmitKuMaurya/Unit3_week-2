@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Testing API</h1>
+    <div id="box">
+        <input type="text" id="Search" placeholder="Search...">
+        <button id="srch_btn" >Search Movie</button>
+    </div>
+    <div id="container">
+
+    </div>
+</body>
+</html>
+<script>
+    //  const url = "https://fakestoreapi.com/products";
+    //  const url = "https://fakestoreapi.com/products"; 
+    const url = "https://www.omdbapi.com/?s=titanic&apikey=a8126887";
+
+async function getData(){
+
+    try{
+        let res= await fetch(url);
+        console.log(res);
+
+        let products = await res.json();
+        // append(users.data)
+        append(products.Search);
+        console.log(products.Search);
+
+    } catch (err){
+        console.log(err);
+      }
+    }
+    getData();
+
+    // document.getElementById("srch_btn").addEventListener("click",Showit);
+    // function Showit(){
+    //     if(ele.Title=="")
+    // }
+
+function append(data){
+    let container = document.getElementById("container");
+    data.forEach(function(ele){
+        let img = document.createElement("img");
+        img.src = ele.Poster;
+        
+        let h2 = document.createElement("h2");
+        h2.innerText = ele.Title;
+        
+        let p = document.createElement("p");
+        p.innerText = ele.Type;
+
+        let p2 = document.createElement("p");
+        p2.innerText = ele.Year;
+
+        let p3 = document.createElement("p");
+        p3.innerText = ele.imdbID;
+        
+        let div = document.createElement("div");
+        div.append(img,h2,p,p2,p3);
+
+        container.append(div);
+    })
+}
+</script>

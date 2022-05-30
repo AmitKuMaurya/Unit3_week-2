@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Star War Characters</title>
+    <style>
+        *{
+            padding: 0px;
+            margin: 0px;
+        }
+        .box{
+            background-image: url('./Star-wars-logo-new-tall.webp');
+            height: 100vh;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            
+        }
+        #container{
+            
+            height: 100px;
+            width: 440px;
+            border-top: none;
+            background-color: black;
+            overflow: scroll;
+            margin: auto;
+            display: contents;
+        }
+        #container>a{
+            text-decoration: none;
+            color: yellow;
+
+        }
+        #search{
+            margin-top: -400px;
+            /* background-color: black; */
+            width: 400px;
+            padding: 20px 20px 20px 20px;
+            text-align: center;
+            margin: auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- <div class="background">
+        <img src="./star-wars-1703175.jpg" alt="">
+    </div> -->
+    <!-- <img src="https://pixabay.com/get/g6037a5b26e074a0760b47c17bb69987f9efa8d0ec15cb820151281ff6366a50dec6300521da282c55138777421e3d737.jpg" width="100%" height="100%" alt=""> -->
+    <div class="box">
+        <input type="text" id="search" oninput="debouncingFunc(Getstars,1000)" onmouseout="donotdoit()" onmouseover="doit()" placeholder="Search Your StarWar Character" />
+        <div onmouseover="doit()" onmouseout="donotdoit()" id="container"></div>
+    </div>
+</body>
+</html>
+
+<script>
+    
+    function donotdoit(){
+        let cont = document.getElementById('container');
+        cont.style.display = "none";
+    }
+    function doit(){
+        let cont = document.getElementById('container');
+        cont.style.display = "block";
+    }
+</script>
+<script>
+
+    let id;
+    
+    
+    let container = document.querySelector("#container");
+
+    let CharArr =  JSON.parse(localStorage.getItem("Characters")) || [];
+    
+    
+    async function Sentdata(q){
+        try{
+            
+            const url = `https://swapi.dev/api/people/?search=${q}`
+            
+            let res = await fetch(url);
+            
+            let data = await res.json();
+            
+            return data.results;
+           
+            console.log(data.results.name);
+        } catch(error) {
+            console.log(error);
+        }    
+    }
+    
+    function StarwarsChar(data){
+        container.innerHTML = null;
+        
+        // container.style.display = "none";
+        if(data===""){
+            return false;
+        }
+
+        data.forEach(function(ele){
+            
+            let a = document.createElement("a");
+            
+            a.setAttribute("href","StarwarChar.html")
+            
+            a.innerText = ele.name;
+            
+            
+            container.append(a);
+           
+        });
+        // container.style.display = "none";
+    }
+    
+    async function Getstars(){
+        let query = document.querySelector("#search").value;
+        
+        let response = Sentdata(query);
+        
+        let data = await response;
+        StarwarsChar(data)
+      
+        console.log(data);
+    }
+
+    function debouncingFunc(func,delay){
+
+        if(id){
+            clearTimeout(id);
+        }
+
+        id = setTimeout(function(){
+            func();
+        },delay);
+    }
+    
+</script>

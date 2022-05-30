@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* #movieInput{
+            width: 200px;
+        } */
+        #outputbox{
+            height: 200px;
+            width: 206px;
+            border-top: none;
+            border: 1px solid black;
+            overflow: scroll;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <input type="text" id="query" oninput="funcmain()">
+    <div id="outputbox"></div>
+</body>
+</html>
+
+<script>
+    
+    
+    let movies_box = document.querySelector("#outputbox");
+    async function uploadData(q){
+        try{
+            
+            const url = `https://api.themoviedb.org/3/search/movie?api_key=72eb556ba4ec7e3aaf06707e5596c4aa&query=${q}`;
+            
+            let res = await fetch(url);
+    
+            let data = await res.json();
+            return data.results;
+            console.log(data);
+        } catch(error) {
+           console.log(error);
+        }
+        
+    }
+
+
+    function appendMovies(data){
+
+        movies_box.innerHTML = null;
+        
+        movies_box.style.display = "none";
+        if(data === undefined){
+            return false;
+        }
+        
+        data.forEach(function (ele){
+            let p = document.createElement("p");
+            
+            p.innerText = ele.title;
+            
+            movies_box.append(p);
+        });
+        movies_box.style.display = "block";
+
+    }
+
+    async function funcmain(){
+        let query = document.getElementById("query").value;
+        let response = uploadData(query);
+
+        let data = await response;
+        // console.log(data);
+
+        appendMovies(data);
+    }
+</script>

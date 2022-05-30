@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .gmap_canvas {
+        overflow: hidden;
+        background: none !important;
+        height: 500px;
+        width: 522px;
+      }
+    </style>
+    <style>
+      .gmap_canvas {
+        overflow: hidden;
+        background: none !important;
+        height: 500px;
+        width: 522px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>fetch 2</h1>
+    <input type="text" id="city" />
+    <button onclick="Getdata()">Cheak Weather</button>
+    <div id="container"></div>
+
+    <div class="mapouter">
+      <div class="gmap_canvas">
+        <iframe
+          width="522"
+          height="500"
+          id="gmap_canvas"
+          frameborder="0"
+          scrolling="no"
+          marginheight="0"
+          marginwidth="0"
+        ></iframe>
+      </div>
+    </div>
+  </body>
+</html>
+
+<script>
+  let api_key = "4afad81f062299ca857c604e13858af9";
+
+  // async function Getdata(lat,lon) {
+  //   let city = document.getElementById("city").value;
+
+  //   let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${api_key}`;
+
+  //   // let url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${api_key}`;
+  //   // console.log(url);
+
+  //   let res = await fetch(url);
+
+  //   let data = await res.json();
+  //   append(data);
+  //   console.log(data.main);
+  //   console.log(data.name);
+
+  //   //     fetch(url).then(function(res) {
+  //   //     return res.json();
+  //   //     console.log(res);
+  //   //   })
+  //   //   .then(function (res) {
+  //   //     // append(res.Search);
+  //   //     console.log(res.coord);
+  //   //   })
+  // }
+
+
+  // this code is for --- if user want to search weather by their location
+  function Getdata(lat,lon){
+    let city = document.getElementById("city").value;
+
+    let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${api_key}`;
+
+    // let url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${api_key}`;
+    fetch(url).then(function(res){
+        return res.json();
+    }).then(function(res){
+        append(res);
+        console.log(res);
+        console.log(res.main);
+        console.log(res.name);
+    })
+  }
+
+  function append(data) {
+    let container = document.getElementById("container");
+    container.innerHTML = "" ;
+    
+    let div = document.createElement("div");
+
+    let h3 = document.createElement("h3");
+    h3.innerText = "City : " + data.name;
+
+    let p = document.createElement("p");
+    p.innerText = `Current temp: ${-273 +data.main.temp}`;
+
+    let p2 = document.createElement("p");
+    p2.innerText = `Max-temp:  ${-273 + data.main.temp_max}`;
+
+    let p3 = document.createElement("p");
+    p3.innerText = `Min-temp: ${-273 + data.main.temp_min}`;
+
+    div.append(h3, p, p2, p3);
+
+    container.append(div);
+
+    let iframe = document.getElementById("gmap_canvas");
+    iframe.src = `https://maps.google.com/maps?q=${data.name}&t=&z=13&ie=UTF8&iwloc=&output=embed`;
+  }
+
+  function getgeolocation(){
+      navigator.geolocation.getCurrentPosition(success);
+
+      function success(position){
+          const latitide = position.coords.latitude;
+          const longitude = position.coords.longitude;
+
+          Getdata(latitide,longitude);
+
+          console.log(latitide);
+          console.log(longitude);
+      }
+  }
+  getgeolocation()
+// src="https://maps.google.com/maps?q=pune&t=&z=13&ie=UTF8&iwloc=&output=embed"
+</script>
+

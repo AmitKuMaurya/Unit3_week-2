@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0px;
+            padding: 0px;
+        }
+        #logo{
+            height: 50%;
+            width: 60%;
+        }
+        #navbar{
+            display: flex;
+            flex-direction: row;
+            height: 60px;
+            background-color: #121212;
+            align-items: center;
+            justify-content: space-evenly;
+        }
+        #container{
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            grid-template-rows: repeat(auto,auto);
+            gap: 50px;
+            /* background-color: #121212; */
+        }
+        #container>div{
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+            text-align: center;
+            background-color: #d87ea0;
+        }
+        /* #container>div>h2{
+            margin-left: 70%;
+        } */
+        #container>div>img{
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            width: 100%;
+            height: 70%;
+        }
+        #search{
+            padding: 10px 10px 10px 10px;
+            border-radius: 7px;
+            background-color: #121212;
+            color: white;
+        }
+        #search_btn{
+            padding: 10px 20px 10px 20px;
+            font-size: large;
+            border-radius: 7px;
+            background-color: #de3476;
+            border: 0pc;
+        }
+        #search_btn:hover{
+            cursor: pointer;
+            background-color: #eb3b7e;
+            color: white;
+
+        }
+    </style>
+  </head>
+  <body>
+    <div id="navbar">
+        <img src="https://www.jiocinema.com/assets/navbar-icons/Group_115134_jiocinema-brandname.svg" alt="logo" id="logo">
+        <input type="text" id="search" placeholder="Search..." />
+        <button id="search_btn">Search</button>
+    </div>
+    <img id="phutu" src="" />
+    <div id="container"></div>
+  </body>
+</html>
+
+<script>
+  document.querySelector("#search_btn").addEventListener("click", Getnow);
+  let Avtaar = document.querySelector("#phutu").value;
+  function Getnow() {
+    let Searching = document.getElementById("search").value;
+
+    fetch(`https://www.omdbapi.com/?s=${encodeURI(Searching)}&apikey=a8126887`)
+      .then(function (res) {
+        return res.json();
+        console.log(res);
+      })
+      .then(function (res) {
+        append(res.Search);
+        // console.log(res);
+        console.log(res.Search);
+      })
+      .catch(function (err) {
+        Avtaar.src ="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqI3lHFjBbLelg5rGnkZVukHUI2cd9cnEGOQ&usqp=CAU";
+      });
+  }
+
+  function imbdRating(Id){
+    let url2 = `https://www.omdbapi.com/?s=${Id}&apikey=a8126887`
+    
+  }
+
+  function append(data) {
+    let container = document.getElementById("container");
+    data.forEach(function (ele) {
+    let div = document.createElement("div");
+
+    // let imgdiv = document.createElement("div");
+    // imgdiv.setAttribute("id","moviesPic")
+    let img = document.createElement("img");
+    img.src = ele.Poster;
+    if (ele.Poster == "N/A") {
+        img.src ="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqI3lHFjBbLelg5rGnkZVukHUI2cd9cnEGOQ&usqp=CAU";
+    }
+    // imgdiv.append(img);
+
+    // let textdiv = document.createElement("div");
+    // textdiv.setAttribute("id","moviesText");
+      let h2 = document.createElement("h2");
+      h2.innerText = "Title : "+ele.Title;
+
+      let p = document.createElement("p");
+      p.innerText = "Type : "+ele.Type;
+
+      let p2 = document.createElement("p");
+      p2.innerText = "Year : "+ele.Year;
+
+      let p3 = document.createElement("p");
+      p3.innerText = "IMDB ID : "+ele.imdbID;
+    //   textdiv.append(h2,p,p2,p3)
+
+      div.append(img,h2,p,p2,p3);
+
+      container.append(div);
+    });
+  }
+</script>
+

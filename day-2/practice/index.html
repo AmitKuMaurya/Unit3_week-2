@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Fetch API</h1>
+    <div id="container">
+
+    </div>
+</body>
+</html>
+
+<script>
+    // let x = fetch();
+    // console.log(x);
+
+    const url = "https://reqres.in/api/users";
+
+    // fetch(url)
+    // .then(function(res){
+    //     return res.json();
+    // })
+    // .then(function (res){
+    //     console.log(res.data);
+    // })
+    // .catch(function(err){
+    //     console.log(err);
+    // });
+
+    // ASync Await 
+    
+    async function getData(){
+
+        try{
+            let res= await fetch(url);
+            console.log(res);
+    
+            let users = await res.json();
+            append(users.data)
+            console.log(users.data);
+
+        } catch (err){
+            console.log(err);
+        }
+    }
+    getData();
+
+    function append(data){
+        let container = document.getElementById("container");
+        data.forEach(function(ele){
+            let img = document.createElement("img");
+            img.src = ele.avatar;
+            
+            let h2 = document.createElement("h2");
+            h2.innerText = ele.first_name;
+            
+            let p = document.createElement("p");
+            p.innerText = ele.email;
+            
+            let div = document.createElement("div");
+            div.append(img,h2,p);
+
+            container.append(div);
+        })
+    }
+
+           
+    // const url = "https://fakestoreapi.com/products";
+    // const url = "https://fakestoreapi.com/products";
+
+    // async function getData(){
+
+    //     try{
+    //         let res= await fetch(url);
+    //         // console.log(res);
+
+    //         let products = await res.json();
+    //         // append(users.data)
+    //         // append(products);
+    //         console.log(products);
+
+    //     } catch (err){
+    //         console.log(err);
+    //       }
+    //     }
+    //     getData();
+
+    // function append(data){
+    //     let container = document.getElementById("container");
+    //     data.forEach(function(ele){
+    //         let img = document.createElement("img");
+    //         img.src = ele.image;
+            
+    //         let h2 = document.createElement("h2");
+    //         h2.innerText = ele.id;
+            
+    //         let p = document.createElement("p");
+    //         p.innerText = ele.price;
+
+    //         let p2 = document.createElement("p");
+    //         p2.innerText = ele.title;
+
+    //         let p3 = document.createElement("p");
+    //         p3.innerText = ele.description;
+            
+    //         let div = document.createElement("div");
+    //         div.append(img,h2,p,p2,p3);
+
+    //         container.append(div);
+    //     })
+    // }
+
+
+
+
+</script>
